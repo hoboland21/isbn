@@ -1,0 +1,11 @@
+django 
+djangorestframework 
+django-filter
+whitenoise
+gunicorn
+markdown
+django-cors-headers
+mysqlclient
+configparser
+ipython
+celery

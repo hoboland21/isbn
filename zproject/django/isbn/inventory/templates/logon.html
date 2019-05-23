@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block body_main %}
+  <h3>Please Enter your email</h3>
+  <form method="POST">
+    {% csrf_token %}
+    <input type="text" name="email">
+    <button type="submit">Go</button>
+  </form>
+  <br>
+{% if teacher_form %}
+  <hr>
+  <form method="POST">
+    {% csrf_token %}
+    <table class="table"> 
+      {{ teacher_form.as_table}}
+    </table>
+    <button name="register">Register</button>
+  </form>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,59 @@
+version: '3.3'
+
+services:
+
+  mysql:
+    build:
+      context: mysql
+    volumes:
+      - mysql-isbn-db:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: mariadb
+
+#  rabbitmq:
+#    build:
+#      context: rabbitmq
+#    environment:
+#      RABBITMQ_DEFAULT_USER: rabbituser
+#      RABBITMQ_DEFAULT_PASS: rabbitpass
+#      RABBITMQ_DEFAULT_VHOST: rabbitmq
+
+  django:
+
+    build:
+      context: django
+
+    volumes:
+      - ./zproject:/usr/src/app/
+    ports:
+        - "8000:8000"
+
+    entrypoint: 
+#      - /bin/sh
+#      - /usr/src/app/django/startup.sh
+      - isbn/manage.py
+      - runserver 
+      - "0:8000"
+    
+
+    depends_on:
+      - mysql
+ #     - rabbitmq
+
+
+  nginx:
+    build:
+      context: nginx
+    volumes:
+      - ./zproject:/usr/src/app/
+    ports:
+      - "80:80"
+    depends_on:
+      - django
+
+
+volumes:
+  mysql-isbn-db: 
+    external : yes    
