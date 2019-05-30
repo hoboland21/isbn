@@ -4,19 +4,38 @@
 <h1 class="align-center">Teacher Book Inventory</h1>
 
 <div class="row" >
-  <div class="col-md-4 grad-grey">
-    <form method="POST">
-      <table class="table">
-        {{ teacher_card.as_table}}
-      </table>
-    </form>
+  <div class="col-md-3 grad-grey">
+    <table class="table">
+      {{ teacher_form.as_table}}
+    </table>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-9 grad-grey">
+    <h3>ISBN</h3>
+    <form method="POST">
+      {% csrf_token %}
+      <input type="text" name="scanISBN" autofocus >
+      <button type="submit" name="save_rec">Go</button> 
+      <input type="hidden" name="teacherId" value="{{ teacher_card.id }}">
+    </form>
+
+    <table class="table"> 
+   
+    {% for rec in item_list %}
+    <tr>
+      <form method="POST" novalidate>
+        {% csrf_token %}
+        <td><button name="update_rec" type="submit" value="{{rec.id}}">Update</button></td>
+        <td><input name="rec_number" type="number" value="{{rec.number}}"> </td>
+        <td> {{rec.isbn}}</td>
+        <td> <input name="rec_title"type="text" value="{{rec.title}}"> </td>
+        <td> <input name="rec_author" type="text" value="{{rec.author}}"> </td>
+        <td><button name="delete_rec" value="{{rec.id}}">X</button></td>
+      </form>
+    </tr>
+    {% endfor %}
+     </table>
   
   </div>
-</div>
-
-
-
-
+</di>
+{{bk}}
 {% endblock %}

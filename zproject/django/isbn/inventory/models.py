@@ -1,6 +1,6 @@
 from django.db import models
 
-
+ISBN_KEY = "41136_33e4d70318f2a0fe8e9abd311de20f48"
 GRADE_CHOICES = (
    ('K4','K4'),
    ('K5','K5'),
@@ -37,9 +37,11 @@ class TeacherCard(models.Model):
 
 #=================================================================================
 class Item(models.Model) :
-  title             = models.CharField(max_length=2048)
-  isbn              = models.CharField(max_length=1024)
-  number            = models.SmallIntegerField()
-
+  teacher   = models.ForeignKey(TeacherCard, on_delete=models.CASCADE)
+  number    = models.SmallIntegerField()
+  isbn      = models.CharField(max_length=64)
+  title     = models.CharField(max_length=2048)
+  author    = models.CharField(max_length=1024,blank=True)
+  
   def __str__(self) :
     return "{} {}".format(self.isbn, self.title)

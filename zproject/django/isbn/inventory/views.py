@@ -4,17 +4,66 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from .models import *
 from .forms import *
-
+import requests as req
 # Create your views here.
 
 #=====================================
+def isbn_api(bookid) :
+  h = {'Authorization': ISBN_KEY }
+  resp = req.get("https://api2.isbndb.com/book/{}".format(bookid), headers=h)
+  return(resp.json())
+#=====================================
 def teacher(request,email) :
   result={}
+
+  if "delete_rec" in request.POST :
+    Item.objects.get(id=request.POST["delete_rec"]).delete()
+    tcard =  TeacherCard.objects.get(email=email) 
+    result["teacher_form"] = TeacherCardForm(instance=tcard)
+    result["item_list"] = Item.objects.filter(teacher__id=tcard.id)
+    result["teacher_card"] = tcard
+  
+  if "update_rec" in request.POST :
+    item = Item.objects.get(id=request.POST["update_rec"])
+    item.number = request.POST["rec_number"]
+    item.title  = request.POST["rec_title"]
+    item.author = request.POST["rec_author"]
+    item.save()    
+
+
+  if 'save_rec' in request.POST :
+    teacher = TeacherCard.objects.get(id=int(request.POST["teacherId"]))
+    if "scanISBN" in request.POST :
+      isbn = request.POST["scanISBN"]
+      items = Item.objects.filter(isbn=isbn) 
+      if items :
+        items[0].number += 1
+        items[0].save()
+      else :
+        item = Item()
+        bk = isbn_api(isbn)
+        item.teacher = teacher 
+        item.isbn = isbn
+        item.number = 1
+        result["bk"] = bk
+        try:
+          item.title = bk["book"]["title_long"]
+          item.author = bk["book"]["authors"]
+        except:
+          pass
+        item.save()
+
   try:
     tcard =  TeacherCard.objects.get(email=email) 
-    result["teacher_card"] = TeacherCardForm(instance=tcard)
+    result["teacher_form"] = TeacherCardForm(instance=tcard)
+    result["item_list"] = Item.objects.filter(teacher__id=tcard.id).order_by("-id")
+    result["teacher_card"] = tcard
   except:
     return redirect("logon")
+  result["item_form"] = ItemForm()
+
+  
+
 
   return  render(request,'teacher.html',context=result)
 #=====================================
@@ -35,4 +84,3 @@ def logon(request) :
       return redirect("teacher",tc.email)
 
   return  render(request,'logon.html',context=result)
-#=====================================

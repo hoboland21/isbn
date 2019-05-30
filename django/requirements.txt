@@ -8,4 +8,5 @@ django-cors-headers
 mysqlclient
 configparser
 ipython
+requests
 celery
