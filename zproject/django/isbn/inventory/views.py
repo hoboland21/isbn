@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from .models import *
 from .forms import *
 import requests as req
+from datetime import date
 # Create your views here.
 
 #=====================================
@@ -28,6 +29,7 @@ def teacher(request,email) :
     item.number = request.POST["rec_number"]
     item.title  = request.POST["rec_title"]
     item.author = request.POST["rec_author"]
+    item.note  = request.POST["rec_note"]
     item.save()    
 
 
@@ -62,10 +64,15 @@ def teacher(request,email) :
     return redirect("logon")
   result["item_form"] = ItemForm()
 
-  
-
-
   return  render(request,'teacher.html',context=result)
+#=====================================
+def report(request,email) :
+  result = {}
+  tcard = TeacherCard.objects.get(email=email) 
+  result['date_today'] = date.today()
+  result["teacher"] =  tcard
+  result["item_list"] = Item.objects.filter(teacher__id=tcard.id).order_by("-id")
+  return  render(request,'report.html',context=result)
 #=====================================
 def logon(request) :
   result={}

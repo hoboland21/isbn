@@ -19,5 +19,7 @@ from inventory.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',logon,name="logon"),
-    path('teacher/<email>/',teacher,name="teacher")
+    path('teacher/<email>/',teacher,name="teacher"),
+    path('report/<email>/',report,name="report")
+    
 ]

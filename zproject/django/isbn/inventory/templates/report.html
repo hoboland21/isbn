@@ -1,0 +1,59 @@
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/isbn.css">
+    <!-- Latest compiled and minified CSS -->
+    <script src="/static/js/jquery-3.3.1.min.js" ></script>
+    <link rel="stylesheet" href="/static/bootstrap-4.2.1-dist/css/bootstrap.min.css">
+    <script src="/static/bootstrap-4.2.1-dist/js/bootstrap.min.js"></script>
+        <title>Mount Carmel School Inventory Report</title>
+
+
+  <style>
+    span {
+      padding:.5em;
+
+    }
+  </style>
+  </head>
+  <body >
+    <h1 class="align-center">
+    <img src="{% static 'img/MCSIcon.png' %}">
+    Teacher Book Inventory</h1>
+    <div style="margin-bottom:1em">
+      <span><strong>Teacher: </strong> {{ teacher.fullname }}</span>
+      <span><strong>Email: </strong> {{ teacher.email }}</span><br>
+    </div>
+    <div style="margin-bottom:1em">
+      <span><strong>Room: </strong>{{ teacher.room_number }}</span>
+      <span><strong>Grade: </strong> {{ teacher.grade }}</span>
+      <span><strong>Section: </strong>{{ teacher.section }}</span>
+      <span><strong>Report Date: </strong>{{ date_today }}</span>
+    </div>
+
+    <table class="table"> 
+      <tr>
+        <th>#</th>
+        <th>Amount</th>
+        <th>ISBN</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Note</th>
+      </tr>
+      {% for rec in item_list %}
+      <tr>
+          <td>{{ forloop.counter }} </td>
+          <td style="text-align:center">{{rec.number}}</td>
+          <td>{{rec.isbn}}</td>
+          <td>{{rec.title}}</td>
+          <td>{{rec.author}}</td>
+          <td>{{rec.note}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

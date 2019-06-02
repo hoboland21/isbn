@@ -42,6 +42,7 @@ class Item(models.Model) :
   isbn      = models.CharField(max_length=64)
   title     = models.CharField(max_length=2048)
   author    = models.CharField(max_length=1024,blank=True)
+  note      = models.CharField(max_length=2048,blank=True)
   
   def __str__(self) :
     return "{} {}".format(self.isbn, self.title)

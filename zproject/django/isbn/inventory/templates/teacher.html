@@ -2,6 +2,9 @@
 {% block body_main %}
 
 <h1 class="align-center">Teacher Book Inventory</h1>
+  <div>
+    <a class="btn" href="{% url "report" teacher_card.email %}">Display Report</a>
+  </div>
 
 <div class="row" >
   <div class="col-md-3 grad-grey">
@@ -29,6 +32,7 @@
         <td> {{rec.isbn}}</td>
         <td> <input name="rec_title"type="text" value="{{rec.title}}"> </td>
         <td> <input name="rec_author" type="text" value="{{rec.author}}"> </td>
+        <td> <input name="rec_note" type="text" value="{{rec.note}}"> </td>
         <td><button name="delete_rec" value="{{rec.id}}">X</button></td>
       </form>
     </tr>
