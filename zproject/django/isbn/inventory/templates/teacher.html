@@ -3,7 +3,7 @@
 
 <h1 class="align-center">Teacher Book Inventory</h1>
   <div>
-    <a class="btn" href="{% url "report" teacher_card.email %}">Display Report</a>
+    <a class="btn" href="{% url "report" teacher_card.email %}"><h3>Display Report</h3></a>
   </div>
 
 <div class="row" >
@@ -20,9 +20,16 @@
       <button type="submit" name="save_rec">Go</button> 
       <input type="hidden" name="teacherId" value="{{ teacher_card.id }}">
     </form>
-
     <table class="table"> 
-   
+    <tr>
+      <th>Update</th>
+      <th>Number</th>
+      <th>ISBN</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Note</th>
+      <th>X</th>
+    </tr>
     {% for rec in item_list %}
     <tr>
       <form method="POST" novalidate>
@@ -38,8 +45,6 @@
     </tr>
     {% endfor %}
      </table>
-  
   </div>
-</di>
-{{bk}}
+</div>
 {% endblock %}
